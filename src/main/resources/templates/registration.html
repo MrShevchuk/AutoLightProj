@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>Log in with your account</title>
+</head>
+<body>
+<div class="container">
+    <form th:action="@{/registration}"
+          th:object="${userForm}"
+          method="post">
+        <div class="form-group form-item">
+            <label for="email">Username:</label>
+            <input type="text" th:field="*{email}" id="email" autofocus="autofocus" placeholder="Username">
+        </div>
+        <p class="error-label" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">ERROR</p>
+        <div class="form-group form-item">
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}" placeholder="Password">
+        </div>
+        <p class="error-label" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">ERROR</p>
+        <div class="form-group form-item">
+            <label for="confirmPassword">Confirm password:</label>
+            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirm your password">
+        </div>
+        <p class="error-label" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">ERROR</p>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <input type="submit" name="login-submit" id="login-submit" value="Register">
+                </div>
+            </div>
+        </div>
+    </form>
+    <h4 class="text-center"><a href="${contextPatch}/login">Login</a></h4>
+</div>
+</body>
+</html>
