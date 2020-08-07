@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -28,13 +29,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRoleRepository userRoleRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        AppUser appUser = this.userRepository.findUserAccount(userName)
-            .orElseThrow(() -> new RuntimeException());
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser appUser = this.userRepository.findUserAccount(username)
+            .orElseThrow(RuntimeException::new);
 
         if (appUser == null) {
-           log.error("User not found! " + userName);
-            throw new UsernameNotFoundException("User " + userName + " was not found in the database");
+           log.error("User not found! " + username);
+            throw new UsernameNotFoundException("User " + username + " was not found in the database");
         }
 
         log.info("Found User: " + appUser);
